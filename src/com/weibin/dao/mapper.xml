@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="test">
+    <insert id="insertStudent" parameterType="com.weibin.bean.Student">
+        /*参数为属性名*/
+        INSERT INTO studentinfo(name, age, score) VALUES (#{name}, #{age}, #{score})
+    </insert>
+
+    <insert id="insertStudentCacheId" parameterType="com.weibin.bean.Student">
+        /*参数为属性名*/
+        INSERT INTO studentinfo(name, age, score) VALUES (#{name}, #{age}, #{score})
+        <selectKey resultType="int" keyProperty="id" order="AFTER">
+            SELECT @@IDENTITY
+        </selectKey>
+    </insert>
+
+
+    <delete id="deleteStudentById" parameterType="com.weibin.bean.Student">
+        DELETE FROM studentinfo WHERE ID = #{id} <!--id仅仅是个占位符，放什么都可以-->
+    </delete>
+
+    <update id="updateStudent" parameterType="com.weibin.bean.Student">
+        UPDATE studentinfo SET NAME = #{name}, age = #{age} , score = #{score} where id = #{id}
+    </update>
+
+    <select id="selectAllStudents" resultType="com.weibin.bean.Student">
+        select id, name, age, score from studentinfo
+    </select>
+
+    <select id="selectStudentById" resultType="com.weibin.bean.Student">
+        select id, name, age, score from studentinfo where id = #{id}
+    </select>
+
+    <select id="selectStudentsByName" resultType="com.weibin.bean.Student">
+        select id, name, age, score from studentinfo where NAME LIKE CONCAT('%', #{name}, '%')
+    </select>
+</mapper>
